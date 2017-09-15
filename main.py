@@ -4,7 +4,7 @@ from PyQt4.QtCore import *
 from Tkinter import *
 import os
 import sys
-import webbrowser
+import urllib2
 
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -21,15 +21,20 @@ class YoutubeDialog(QMainWindow, FORM_CLASS):
         self.closeButton.clicked.connect(self.__close)
 
     def __download(self):
-        q = self.urlEdit.text()
-        if q is not None:
-            webbrowser.open(q)
+        url = str(self.urlEdit.text())
+        if url is not None:
+            print("downloading with urllib2")
+            req = urllib2.Request(url, headers={'User-Agent': "Magic Browser"})
+            f = urllib2.urlopen(req)
+            data = f.read()
+            with open("image.jpeg", "wb") as code:
+                code.write(data)
         else:
-            print("no entry")
+            QMessageBox.warning(self.iface.mainWindow(), self.tr("Nothing to download"), self.tr("There is no Url. So please write the Ulr of your Video that you want to download"))
 
     def __save(self):
         dateiname = QFileDialog.getExistingDirectory(self, "Save", "/home/hka/Downloads", QFileDialog.ShowDirsOnly)
-        
+
     def __close(self):
         sys.exit()
 
