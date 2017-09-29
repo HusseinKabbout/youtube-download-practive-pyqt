@@ -1,9 +1,9 @@
-from PyQt4 import uic
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5 import uic
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 import os
 import sys
-import urllib2
 import pytube
 
 
@@ -34,11 +34,11 @@ class YoutubeDialog(QMainWindow, FORM_CLASS):
 
             text = self.saveEdit.text()
             vid.download(text)
-
-            while self.progressBar < 100:
+            print(yt.filename + "\nHas been successfully downloaded")
+            goDo = self.progressBar.value()
+            while goDo < 100:
                 self.completed += 0.0001
                 self.progressBar.setValue(self.completed)
-            print(yt.filename + "\nHas been successfully downloaded")
         else:
             msgBox = QMessageBox()
             msgBox.setWindowTitle("Error 404")
@@ -46,7 +46,7 @@ class YoutubeDialog(QMainWindow, FORM_CLASS):
                            "Please write the Ulr of your Video that"
                            "you want to download")
             msgBox.addButton(QPushButton("exit"), QMessageBox.RejectRole)
-            ret = msgBox.exec_()
+            msgBox.exec_()
 
     def __save(self):
         dateiname = QFileDialog.getExistingDirectory(
