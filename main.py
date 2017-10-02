@@ -5,7 +5,8 @@ from PyQt5.QtWidgets import *
 import os
 import sys
 import pytube
-
+import resources
+from ui.ui_resolution import Ui_dialog
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui/dialog.ui'))
@@ -23,15 +24,21 @@ class YoutubeDialog(QMainWindow, FORM_CLASS):
         url = str(self.urlEdit.text())
         if url is not "":
             self.completed = 0
+            dialog = QDialog()
+            dialog.ui = Ui_dialog()
+            dialog.ui.setupUi(dialog)
+
             yt = pytube.YouTube(url)
             videos = yt.get_videos()
 
             s = 1
             for v in videos:
+                i = str(s) + ". " + str(v)
+                dialog.ui.resoList.addItem(i)
                 s += 1
 
-            vid = videos[3]
-
+            dialog.exec_()
+            vid = videos[2]
             text = self.saveEdit.text()
             vid.download(text)
             print(yt.filename + "\nHas been successfully downloaded")
