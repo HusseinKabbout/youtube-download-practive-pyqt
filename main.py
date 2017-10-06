@@ -2,11 +2,12 @@ from PyQt5 import uic
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from ui.ui_resolution import Ui_dialog
 import os
 import sys
 import pytube
 import resources
-from ui.ui_resolution import Ui_dialog
+import validators
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui/dialog.ui'))
@@ -21,14 +22,14 @@ class YoutubeDialog(QMainWindow, FORM_CLASS):
         self.closeButton.clicked.connect(self.__close)
 
     def __download(self):
-        url = str(self.urlEdit.text())
-        if url is not "":
+        Url = str(self.urlEdit.text())
+        if validators.url(Url):
             self.completed = 0
             dialog = QDialog()
             dialog.ui = Ui_dialog()
             dialog.ui.setupUi(dialog)
 
-            yt = pytube.YouTube(url)
+            yt = pytube.YouTube(Url)
             videos = yt.get_videos()
 
             s = 1

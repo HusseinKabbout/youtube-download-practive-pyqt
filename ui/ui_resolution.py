@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys
 
 
 class Ui_dialog(object):
@@ -23,9 +24,13 @@ class Ui_dialog(object):
         self.resoList.setGeometry(QtCore.QRect(10, 10, 381, 192))
         self.resoList.setSelectionRectVisible(True)
         self.resoList.setObjectName("resoList")
+        self.resoEdit = QtWidgets.QLineEdit(dialog)
+        self.resoEdit.setGeometry(QtCore.QRect(140, 230, 121, 31))
+        self.resoEdit.setObjectName("resoEdit")
 
         self.retranslateUi(dialog)
         self.closeBtn.clicked.connect(dialog.close)
+        self.selectBtn.clicked.connect(self.save)
         QtCore.QMetaObject.connectSlotsByName(dialog)
 
     def retranslateUi(self, dialog):
@@ -33,3 +38,6 @@ class Ui_dialog(object):
         dialog.setWindowTitle(_translate("dialog", "Select Resolution"))
         self.closeBtn.setText(_translate("dialog", "Close"))
         self.selectBtn.setText(_translate("dialog", "Select"))
+
+    def save(self):
+        sys.exit()
