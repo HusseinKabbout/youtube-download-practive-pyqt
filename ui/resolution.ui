@@ -7,51 +7,35 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>272</height>
+    <height>277</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Select Resolution</string>
   </property>
-  <widget class="QPushButton" name="closeBtn">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>230</y>
-     <width>91</width>
-     <height>33</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Close</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="selectBtn">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>230</y>
-     <width>91</width>
-     <height>33</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Select</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="resoList">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>381</width>
-     <height>192</height>
-    </rect>
-   </property>
-   <property name="selectionRectVisible">
-    <bool>true</bool>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QListWidget" name="resoList">
+     <property name="selectionRectVisible">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="selectBtn">
+     <property name="text">
+      <string>Select</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="closeBtn">
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections>

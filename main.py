@@ -6,56 +6,55 @@ import os
 import sys
 import pytube
 import resources
-from ui.ui_resolution import Ui_dialog
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui/dialog.ui'))
 
 
-class YoutubeDialog(QMainWindow, FORM_CLASS):
+FORM_RES_CLASS, _ = uic.loadUiType(os.path.join(
+    os.path.dirname(__file__), 'ui/resolution.ui'))
+
+
+class YoutubeDialog(QDialog, FORM_CLASS):
+
     def __init__(self):
         super(YoutubeDialog, self).__init__()
+
         self.setupUi(self)
         self.downloadButton.clicked.connect(self.__download)
         self.saveButton.clicked.connect(self.__save)
         self.closeButton.clicked.connect(self.__close)
 
     def __download(self):
-        url = str(self.urlEdit.text())
-        if url is not "":
-            self.completed = 0
-            dialog = QDialog()
-            dialog.ui = Ui_dialog()
-            dialog.ui.setupUi(dialog)
 
-            yt = pytube.YouTube(url)
-            videos = yt.get_videos()
+        url = self.urlEdit.text()
+        # TODO: add url validator
+        if url and url is "":
+            QMessageBox.warning(self,
+                                "URL Error",
+                                "Please provide a valid URL")
+            return
 
-            s = 1
-            for v in videos:
-                i = str(s) + ". " + str(v)
-                dialog.ui.resoList.addItem(i)
-                s += 1
+        if self.saveEdit.text() and self.saveEdit.text() is "":
+            QMessageBox.warning(self,
+                                "Save path Error",
+                                "Please provide a path")
+            return
+        # TODO: find better library
+        yt = pytube.YouTube(url)
+        videos = yt.get_videos()
 
-            dialog.exec_()
-            vid = videos[2]
-            text = self.saveEdit.text()
-            vid.download(text)
-            print(yt.filename + "\nHas been successfully downloaded")
-            goDo = self.progressBar.value()
-            while goDo < 100:
-                self.completed += 0.0001
-                self.progressBar.setValue(self.completed)
-        else:
-            msgBox = QMessageBox()
-            msgBox.setWindowTitle("Error 404")
-            msgBox.setText("There is no Url.\n"
-                           "Please write the Ulr of your Video that"
-                           "you want to download")
-            msgBox.addButton(QPushButton("exit"), QMessageBox.RejectRole)
-            msgBox.exec_()
+        vid = videos[2]
+
+        vid.download(self.saveEdit.text())
+
+        QMessageBox.success(self,
+                            "Success",
+                            yt.filename + "\nHas been successfully downloaded")
+        # TODO: add progressBar
 
     def __save(self):
+        # Fix me
         dateiname = QFileDialog.getExistingDirectory(
             self, "Save", "/home/hka/", QFileDialog.ShowDirsOnly)
         self.saveEdit.setText(dateiname)
